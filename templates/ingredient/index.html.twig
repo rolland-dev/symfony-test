@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ingredients{% endblock %}
+
+{% block body %}
+
+<div class="text-center mt-4">
+    <h1>Mes ingrédients</h1>
+
+    {% for message in app.flashes('success') %}
+      <div class="alert alert-success mt-4">
+          {{ message }}
+      </div>
+    {% endfor %}
+
+    <a href="{{ path('new') }}" class="btn btn-primary mt-4">Nouvel Ingrédients</a>
+
+    <div class="count d-flex justify-content-center m-4">  
+      {% if ingredients.getTotalItemCount %}
+        {{ ingredients.getTotalItemCount }} ingrédients
+      {% else %}
+        Pas d'ingrédients
+      {% endif %}
+    </div>
+
+    <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Numéro</th>
+            <th scope="col">Nom</th>
+            <th scope="col">Prix</th>
+            <th scope="col">Date</th>
+            <th scope="col">Edition</th>
+            <th scope="col">Suppression</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for ingredient in ingredients %}
+                <tr class="table-primary"></tr>
+                    <td>{{ ingredient.id}}</td>
+                    <td>{{ ingredient.nom}}</td>
+                    <td>{{ ingredient.prix}}</td>
+                    <td>{{ ingredient.createdAt|date('d/m/Y')}}</td>
+                    <td>
+                      <a href="{{ path('edit', {id : ingredient.id})}}" class="btn btn-info">Editer</a>
+                    </td>
+                    <td>
+                      <a href="{{ path('delete', {id : ingredient.id})}}" onclick="return confirm('Etes vous sûr de vouloir supprimer l\'ingrédient.')" class="btn btn-warning">Supprimer</a>
+                    </td>
+                </tr>
+            {% endfor %}
+
+        </tbody>
+      </table>
+  <div class="navigation d-flex justify-content-center">
+    {% if ingredients.getTotalItemCount %}
+      {{ knp_pagination_render(ingredients)  }}
+    {% endif %}
+    
+  </div>
+
+</div>
+{% endblock %}
